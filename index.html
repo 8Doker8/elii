@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Elii 💕</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Itim&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose: #e8a0a8;
+      --rose-deep: #c97b84;
+      --cream: #fff5f5;
+      --blush: #f8d7da;
+      --text: #5c3d42;
+      --heart: #e63964;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(160deg, #fff5f7 0%, #ffe4e9 40%, #ffd6e0 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+    }
+
+    /* Floating hearts background */
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .heart {
+      position: absolute;
+      font-size: 1.2rem;
+      opacity: 0.15;
+      animation: float 8s ease-in-out infinite;
+    }
+    .heart:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .heart:nth-child(2) { left: 85%; top: 15%; animation-delay: 1s; }
+    .heart:nth-child(3) { left: 25%; top: 70%; animation-delay: 2s; }
+    .heart:nth-child(4) { left: 70%; top: 60%; animation-delay: 0.5s; }
+    .heart:nth-child(5) { left: 50%; top: 85%; animation-delay: 3s; }
+    .heart:nth-child(6) { left: 15%; top: 45%; animation-delay: 1.5s; }
+    .heart:nth-child(7) { left: 90%; top: 40%; animation-delay: 2.5s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-15px) scale(1.05); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* Compliments section */
+    .compliments-box {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 24px;
+      padding: 2rem 1.75rem;
+      box-shadow: 0 8px 32px rgba(230, 57, 100, 0.12);
+      margin-bottom: 2rem;
+      border: 2px solid rgba(232, 160, 168, 0.4);
+    }
+
+    .compliments-title {
+      font-family: 'Itim', cursive;
+      font-size: 1.35rem;
+      color: var(--rose-deep);
+      margin-bottom: 1rem;
+    }
+
+    .compliment {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .compliment.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Question section */
+    .question-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease 1.5s, transform 0.7s ease 1.5s;
+    }
+    .question-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .question {
+      font-family: 'Itim', cursive;
+      font-size: 1.75rem;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .question span {
+      color: var(--heart);
+    }
+
+    .buttons {
+      position: relative;
+      width: 100%;
+      min-height: 140px;
+      max-width: 320px;
+    }
+
+    .btn {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0.85rem 1.8rem;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-yes {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(calc(-100% - 0.5rem), -50%);
+      background: linear-gradient(135deg, var(--heart), var(--rose-deep));
+      color: white;
+      box-shadow: 0 4px 20px rgba(230, 57, 100, 0.35);
+    }
+    .btn-yes:hover {
+      transform: translate(calc(-100% - 0.5rem), -50%) scale(1.05);
+      box-shadow: 0 6px 24px rgba(230, 57, 100, 0.45);
+    }
+
+    .btn-no {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(0.5rem, -50%);
+      background: linear-gradient(135deg, var(--rose), var(--blush));
+      color: var(--text);
+      box-shadow: 0 4px 16px rgba(200, 120, 130, 0.25);
+      transition: box-shadow 0.2s ease;
+    }
+    .btn-no:hover {
+      box-shadow: 0 6px 20px rgba(200, 120, 130, 0.35);
+    }
+
+    /* After Yes: WhatsApp message */
+    .after-yes {
+      display: none;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+    .after-yes.visible {
+      display: block;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .after-yes .heart-big {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      animation: pulse 1s ease infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .after-yes h2 {
+      font-family: 'Itim', cursive;
+      font-size: 1.6rem;
+      color: var(--heart);
+      margin-bottom: 1rem;
+    }
+
+    .after-yes p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts">
+    <span class="heart">💕</span>
+    <span class="heart">💗</span>
+    <span class="heart">💖</span>
+    <span class="heart">💕</span>
+    <span class="heart">💗</span>
+    <span class="heart">💖</span>
+    <span class="heart">💕</span>
+  </div>
+
+  <div class="container">
+    <!-- Compliments -->
+    <section class="compliments-box">
+      <p class="compliments-title">Elii, you're...</p>
+      <p class="compliment" data-compliment>really funny 💛</p>
+      <p class="compliment" data-compliment>you have amazing eyes ✨</p>
+      <p class="compliment" data-compliment>beautiful and sporty 🌟</p>
+      <p class="compliment" data-compliment>so self-aware and smart 🧠</p>
+      <p class="compliment" data-compliment>and I'm so, so proud of you 💕</p>
+    </section>
+
+    <!-- Question + Buttons -->
+    <section class="question-section" id="questionSection">
+      <p class="question">Will you be my <span>remote Valentine</span>?</p>
+      <div class="buttons" id="buttons">
+        <button type="button" class="btn btn-yes" id="btnYes">Yes!</button>
+        <button type="button" class="btn btn-no" id="btnNo">No</button>
+      </div>
+    </section>
+
+    <!-- After Yes: WhatsApp prompt -->
+    <section class="after-yes" id="afterYes">
+      <div class="heart-big">💕</div>
+      <h2>Yay! Happy Valentine's 💝</h2>
+      <p>Please send me on WhatsApp the address where you'll be staying during Valentine's, so we can make it special even from afar.</p>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      // Compliments: stagger visibility
+      var compliments = document.querySelectorAll('[data-compliment]');
+      compliments.forEach(function (el, i) {
+        setTimeout(function () {
+          el.classList.add('visible');
+        }, 400 + i * 350);
+      });
+
+      // Show question section after compliments
+      setTimeout(function () {
+        document.getElementById('questionSection').classList.add('visible');
+      }, 600 + compliments.length * 350);
+
+      var buttonsEl = document.getElementById('buttons');
+      var btnYes = document.getElementById('btnYes');
+      var btnNo = document.getElementById('btnNo');
+      var questionSection = document.getElementById('questionSection');
+      var afterYes = document.getElementById('afterYes');
+
+      function randomPosition(btn) {
+        var rect = buttonsEl.getBoundingClientRect();
+        var btnRect = btn.getBoundingClientRect();
+        var padding = 8;
+        var maxX = rect.width - btnRect.width - padding;
+        var maxY = rect.height - btnRect.height - padding;
+        var minX = padding;
+        var minY = padding;
+        if (maxX <= minX) maxX = minX + 1;
+        if (maxY <= minY) maxY = minY + 1;
+        var x = minX + Math.random() * (maxX - minX);
+        var y = minY + Math.random() * (maxY - minY);
+        btn.style.left = x + 'px';
+        btn.style.top = y + 'px';
+        btn.style.transform = 'none';
+      }
+
+      function moveNo() {
+        randomPosition(btnNo);
+      }
+
+      btnNo.addEventListener('mouseenter', moveNo);
+      btnNo.addEventListener('click', function (e) {
+        e.preventDefault();
+        moveNo();
+      });
+
+      btnYes.addEventListener('click', function () {
+        questionSection.classList.add('hidden');
+        afterYes.classList.add('visible');
+      });
+    })();
+  </script>
+</body>
+</html>
