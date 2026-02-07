@@ -240,10 +240,66 @@
       color: white;
       border-color: transparent;
     }
+
+    /* Mobile responsive */
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.25rem 1rem;
+        padding-bottom: 5rem;
+      }
+      .compliments-box {
+        padding: 1.5rem 1.25rem;
+        margin-bottom: 1.5rem;
+        border-radius: 20px;
+      }
+      .compliments-title {
+        font-size: 1.2rem;
+      }
+      .compliment {
+        font-size: 0.98rem;
+        line-height: 1.85;
+      }
+      .question {
+        font-size: 1.45rem;
+        margin-bottom: 1.25rem;
+      }
+      .buttons {
+        min-height: 120px;
+        max-width: 100%;
+        padding: 0 0.5rem;
+      }
+      .btn {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+        min-height: 44px;
+        min-width: 44px;
+      }
+      .after-yes .heart-big {
+        font-size: 2.5rem;
+      }
+      .after-yes h2 {
+        font-size: 1.4rem;
+      }
+      .after-yes p {
+        font-size: 0.98rem;
+      }
+      .music-btn {
+        width: 48px;
+        height: 48px;
+        bottom: max(1rem, env(safe-area-inset-bottom));
+        right: max(1rem, env(safe-area-inset-right));
+        font-size: 1.25rem;
+      }
+    }
+    @media (max-width: 360px) {
+      .question {
+        font-size: 1.3rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <audio id="bgMusic" loop>
+  <audio id="bgMusic" loop autoplay>
     <source src="careless-whisper.mp3" type="audio/mpeg" />
   </audio>
   <button type="button" class="music-btn" id="musicBtn" title="Play Careless Whisper">🎵</button>
@@ -289,30 +345,59 @@
 
   <script>
     (function () {
-      // Careless Whisper music
+      // Careless Whisper: start as soon as page loads (and on first tap if autoplay was blocked)
       var bgMusic = document.getElementById('bgMusic');
       var musicBtn = document.getElementById('musicBtn');
-      if (musicBtn && bgMusic) {
-        musicBtn.addEventListener('click', function () {
-          if (bgMusic.paused) {
-            bgMusic.play().catch(function () {});
-            musicBtn.classList.add('playing');
-            musicBtn.innerHTML = '🎶';
-          } else {
-            bgMusic.pause();
-            musicBtn.classList.remove('playing');
-            musicBtn.innerHTML = '🎵';
-          }
-        });
-        bgMusic.addEventListener('playing', function () {
+
+      function updateMusicButton() {
+        if (!musicBtn) return;
+        if (bgMusic && !bgMusic.paused) {
           musicBtn.classList.add('playing');
           musicBtn.innerHTML = '🎶';
-        });
-        bgMusic.addEventListener('pause', function () {
+        } else {
           musicBtn.classList.remove('playing');
           musicBtn.innerHTML = '🎵';
-        });
+        }
       }
+
+      function tryPlay() {
+        if (bgMusic) {
+          bgMusic.play().then(function () {
+            updateMusicButton();
+          }).catch(function () {});
+        }
+      }
+
+      tryPlay();
+
+      function once(el, events, fn) {
+        var done = false;
+        function handler() {
+          if (done) return;
+          done = true;
+          fn();
+          events.forEach(function (e) { el.removeEventListener(e, handler); });
+        }
+        events.forEach(function (e) { el.addEventListener(e, handler, { passive: true }); });
+      }
+      once(document.body, ['click', 'touchstart'], function () {
+        if (bgMusic && bgMusic.paused) tryPlay();
+      });
+
+      if (musicBtn && bgMusic) {
+        musicBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (bgMusic.paused) {
+            bgMusic.play().catch(function () {});
+          } else {
+            bgMusic.pause();
+          }
+          updateMusicButton();
+        });
+        bgMusic.addEventListener('playing', updateMusicButton);
+        bgMusic.addEventListener('pause', updateMusicButton);
+      }
+      updateMusicButton();
 
       // Compliments: stagger visibility
       var compliments = document.querySelectorAll('[data-compliment]');
